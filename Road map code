@@ -1,0 +1,46 @@
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime, timedelta
+
+# Define start date of iteration and task durations
+start_date = datetime(2024, 10, 14)  # Starting on Week 6, Monday
+tasks = {
+    "Frontend Initialization": 2,  # Days required for each task
+    "Backend Setup": 2,
+    "MySQL Configuration": 2,
+    "GitHub Repository Setup": 1,
+    "Trello Board Setup": 1,
+    "Documentation Completion": 3,
+    "Initial Testing Setup": 1,
+}
+
+# Generate end dates for tasks
+task_dates = []
+current_start = start_date
+for task, duration in tasks.items():
+    task_dates.append((task, current_start, current_start + timedelta(days=duration)))
+    current_start += timedelta(days=duration)
+
+# Create the plot
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot each task
+for i, (task, start, end) in enumerate(task_dates):
+    ax.barh(task, (end - start).days, left=start, height=0.4, align='center')
+
+# Format the x-axis for dates
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=1))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %d'))
+plt.xticks(rotation=45)
+
+# Labels and title
+plt.xlabel('Date')
+plt.ylabel('Tasks')
+plt.title('Roadmap for Iteration 1 (Weeks 6-7)')
+
+# Show grid for better visibility
+ax.grid(True)
+
+# Show the plot
+plt.tight_layout()
+plt.show()
